@@ -10,6 +10,10 @@ class InputsPage extends StatefulWidget {
 class _InputsPageState extends State<InputsPage> {
   String _nombre = "";
   String _email = "";
+  String _fecha = "ingrese la fecha";
+  String _opcSeleccionada = '1';
+  List<String> _listaPoderes = ['1', '2', '3'];
+  TextEditingController _inputFieldController = new TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,6 +28,8 @@ class _InputsPageState extends State<InputsPage> {
             _createPasswordInput(),
             Divider(),
             _crearFecha(context),
+            Divider(),
+            _mostrarDropdown(),
             Divider(),
             _mostrarPersona(_nombre)
           ]),
@@ -60,8 +66,8 @@ class _InputsPageState extends State<InputsPage> {
         keyboardType: TextInputType.emailAddress,
         decoration: InputDecoration(
             counter: Text("Letras ${_email.length}"),
-            hintText: "nombre",
-            labelText: "nombre",
+            hintText: "correo",
+            labelText: "correo",
             helperText: "solo es el nombre",
             suffixIcon: Icon(Icons.email),
             border:
@@ -80,8 +86,8 @@ class _InputsPageState extends State<InputsPage> {
         obscureText: true,
         decoration: InputDecoration(
             counter: Text("Letras ${_email.length}"),
-            hintText: "nombre",
-            labelText: "nombre",
+            hintText: "password",
+            labelText: "password",
             helperText: "solo es el nombre",
             suffixIcon: Icon(Icons.email),
             border:
@@ -97,12 +103,12 @@ class _InputsPageState extends State<InputsPage> {
   Widget _crearFecha(context) {
     return TextField(
         enableInteractiveSelection: false,
+        controller: _inputFieldController,
         autofocus: false,
         obscureText: false,
         decoration: InputDecoration(
-            counter: Text("Letras ${_email.length}"),
+            counter: Text("Letras 0"),
             hintText: "Fecha de nacimiento",
-            labelText: "Fecha de nacimiento",
             helperText: "solo es la fecha",
             suffixIcon: Icon(Icons.date_range),
             border:
@@ -114,13 +120,43 @@ class _InputsPageState extends State<InputsPage> {
         });
   }
 
-  _selectDate(BuildContext context) async {
-    DateTime pick = await showDatePicker(
-      context: context,
-      initialDate: new DateTime.now(),
-      firstDate: new DateTime(2021),
-      lastDate: new DateTime(2025),
-    );
-    if (pick != null) {}
+  _selectDate(context) async {
+    DateTime? picked = await showDatePicker(
+        context: context,
+        initialDate: new DateTime.now(),
+        firstDate: new DateTime(2021),
+        lastDate: new DateTime(2025),
+        locale: Locale('es', 'ES'));
+
+    if (picked != null) {
+      setState(() {
+        _fecha = picked.toString();
+        _inputFieldController.text = _fecha;
+      });
+    }
+  }
+
+  List<DropdownMenuItem> _getOpcDropdown() {
+    List<DropdownMenuItem<String>> list = [];
+    _listaPoderes.forEach((poder) {
+      list.add(DropdownMenuItem(child: Text(poder), value: poder));
+    });
+    return list;
+  }
+
+  Widget _mostrarDropdown() {
+    return Row(children: <Widget>[
+      Icon(Icons.ac_unit),
+      Expanded(
+        child: DropdownButton<dynamic>(
+          value: _opcSeleccionada,
+          items: _getOpcDropdown(),
+          onChanged: (opt) {
+            _opcSeleccionada = opt;
+            setState(() {});
+          },
+        ),
+      ),
+    ]);
   }
 }

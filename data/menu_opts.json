@@ -25,6 +25,11 @@
             "ruta" : "inputs",
             "icon" : "inputs",
             "texto": "Inpust Controller"
+        },
+        {
+            "ruta" : "slider",
+            "icon" : "slider",
+            "texto": "Carrusel"
         }
     ]
 }
