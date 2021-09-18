@@ -1,4 +1,4 @@
-import 'package:components/src/pages/alert_page.dart';
+//import 'package:components/src/pages/alert_page.dart';
 import 'package:components/src/utils/icon_string_util.dart';
 import 'package:flutter/material.dart';
 import 'package:components/src/providers/menu_provider.dart';
@@ -9,9 +9,20 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('Inicio'),
+        //flexibleSpace: ListTile(title: Text('hola mundo !|')),
         centerTitle: false,
         backgroundColor: Color(0xff885566),
       ),
+      bottomNavigationBar: BottomNavigationBar(items: [
+        BottomNavigationBarItem(
+          icon: Icon(Icons.home),
+          label: 'Home',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.home),
+          label: 'Home',
+        ),
+      ]),
       body: _lista(),
     );
   }
