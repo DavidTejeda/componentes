@@ -19,7 +19,7 @@ class HomePage extends StatelessWidget {
   Widget _lista() {
     return FutureBuilder(
       future: menuProvider.cargarData(),
-      initialData: [],
+      //initialData: [], la informacion inicial que tendra nuestro future
       builder: (context, AsyncSnapshot<List<dynamic>> snapshot) {
         return ListView(children: _listaItems(snapshot.data, context));
       },
@@ -27,27 +27,30 @@ class HomePage extends StatelessWidget {
   }
 
   List<Widget> _listaItems(data, BuildContext context) {
-    final List<Widget> opciones = [];
+    if (data == []) {
+      return [];
+    } else {
+      final List<Widget> opciones = [];
+      data.forEach((opt) {
+        final widgetTemp = ListTile(
+          title: Text(opt['texto']),
+          leading: getIcon(opt['icon']),
+          trailing: Icon(Icons.keyboard_arrow_right_outlined),
+          subtitle: Text('subtitulo de mi aplicación'),
+          onTap: () {
+            //funcion para moverse con rutas SIN nombre
+            //final route = MaterialPageRoute(
+            //builder: (context) => AlertPage(),
+            //);
+            //Navigator.push(context, route);
 
-    data.forEach((opt) {
-      final widgetTemp = ListTile(
-        title: Text(opt['texto']),
-        leading: getIcon(opt['icon']),
-        trailing: Icon(Icons.keyboard_arrow_right_outlined),
-        subtitle: Text('subtitulo de mi aplicación'),
-        onTap: () {
-          //funcion para moverse con rutas SIN nombre
-          //final route = MaterialPageRoute(
-          //builder: (context) => AlertPage(),
-          //);
-          //Navigator.push(context, route);
-
-          //function para moverse con rutas con nombre
-          Navigator.pushNamed(context, opt['ruta']);
-        },
-      );
-      opciones..add(widgetTemp)..add(Divider());
-    });
-    return opciones;
+            //function para moverse con rutas con nombre
+            Navigator.pushNamed(context, opt['ruta']);
+          },
+        );
+        opciones..add(widgetTemp)..add(Divider());
+      });
+      return opciones;
+    }
   }
 }
